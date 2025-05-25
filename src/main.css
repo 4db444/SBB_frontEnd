@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root{
+    --primary-bg : #0d1117;
+    --secondary-bg : #161b22;
+    --tertiary-bg : #21262d;
+    
+    --border : #30363d;
+
+    --primary-text : #e6edf3;
+    --secondary-text : #7d8590;
+
+    --primary-btn : #10b981; /*use for primary elements and also can be used in the backgroud with minimized opacity*/
+    --hover-btn : #059669;
+    
+    --success-color : #10b981;
+    --warning-color : #ef4444;
+    --error-color : #f59e0b;
+}
+
+* {
+    font-family: "Roboto", sans-serif;;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+}
