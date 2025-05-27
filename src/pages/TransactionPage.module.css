@@ -1,0 +1,79 @@
+.table {
+    width: 95%;
+    text-transform: capitalize;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 1rem auto;
+    overflow: hidden;
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    user-select: none;
+    tr {
+        height: 40px;
+    }
+    
+    tbody {
+        background-color: var(--secondary-bg);
+        tr{
+            height: 60px;
+        }
+        tr td:not(td:first-child){
+            text-align: center;
+        }
+
+        tr:nth-of-type(2n){
+            background-color: var(--secondary-bg);
+        }
+
+        tr:nth-of-type(2n + 1){
+            background-color: var(--tertiary-bg);
+        }
+
+        td {
+            font-size: 18px;
+            padding: 0 1rem;
+            
+        }
+
+        td.expense, td.income{
+            font-size: 18px;
+            font-weight: 600;
+            font-family: monospace;
+        }
+
+        td.expense {
+            color: var(--error-color);
+        }
+
+        td.income {
+            color: var(--success-color);
+        }
+
+        span.group {
+            background-color: #f59f0b38;
+            align-items: center;
+            border: 2px solid var(--warning-color);
+            color: var(--warning-color);
+            padding: .2rem .6rem;
+            border-radius: 99px;
+            font-size: 14px;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        td.actions {
+            .eye, .trash {
+                width: 25px;
+                height: 25px;
+                margin-inline: 20px;
+            }
+            .eye {
+                color: var(--primary-btn);
+            }
+
+            .trash {
+                color: var(--error-color);
+            }
+        }
+    }
+}

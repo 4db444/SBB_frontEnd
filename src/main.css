@@ -14,8 +14,8 @@
     --hover-btn : #059669;
     
     --success-color : #10b981;
-    --warning-color : #ef4444;
-    --error-color : #f59e0b;
+    --error-color : #ef4444;
+    --warning-color : #f59e0b;
 
     --nav-height : 50px;
 }
@@ -30,4 +30,9 @@
 body {
     background-color: var(--primary-bg);
     color: var(--primary-text);
+}
+
+main {
+    min-height: calc(100vh - var(--nav-height));
+    position: relative;
 }
