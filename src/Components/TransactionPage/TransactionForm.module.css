@@ -124,3 +124,28 @@
         transition: all .2s ease-in-out;
     }
 }
+
+.groups {
+    text-transform: capitalize;
+    display: block;
+    p {
+        margin-block: 1rem;
+    }
+
+    input {
+        display: none;
+    }
+
+    label {
+        color: var(--secondary-text);
+        border: 2px solid var(--border);
+        padding: 5px 10px;
+        border-radius: 10px;
+        user-select: none;
+    }
+
+    input:checked + label {
+        color: var(--primary-text);
+        background-color: var(--primary-btn);
+    }
+}

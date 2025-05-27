@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import styles from "./TransactionForm.module.css"
 import Cookies from "js-cookie";
+import { useGroup } from "../../Context/GroupContext";
 
 export default function TransactionForm ({handleClose, addTransaction}){
+    const {groups, getGroupById} = useGroup()
     const [transactionType, setTransactionType] = useState("income")
     const [beneficiary, setBeneficiary] = useState("personal")
     const [categories, setCategories] = useState([])
     const [formData, setFormData] = useState({
         amount : '',
         description : "",
-        category : ""
+        category : "",
+        group : ""
     })
     
     useEffect(() =>{
@@ -18,9 +21,21 @@ export default function TransactionForm ({handleClose, addTransaction}){
         setFormData({
             amount : '',
             description : "",
-            category : ""
+            category : "",
+            group : '',
+            members : []
         })
+        setBeneficiary("personal")
     }, [transactionType])
+    
+    useEffect (() => {
+        setFormData(prev => ({
+            ...prev,
+            group : '',
+            members : []
+        }))
+
+    }, [beneficiary])
 
     async function getCategories (){
         const res = await fetch(`http://localhost:8000/api/${transactionType}/categories`, {
@@ -61,6 +76,22 @@ export default function TransactionForm ({handleClose, addTransaction}){
             addTransaction(data)
         }
     }
+console.log(formData)
+    function handleMembers (e){
+        const {value, checked} = e.target
+
+        if(checked){
+            setFormData(prev => ({
+                ...prev,
+                members : [...prev.members, value]
+            }))
+        }else {
+            setFormData(prev => ({
+                ...prev, 
+                members : prev.members.filter(m => m != value)
+            }))
+        }
+    }
 
     return <div className={styles.formOverlay}>
 
@@ -83,7 +114,8 @@ export default function TransactionForm ({handleClose, addTransaction}){
                 {formData.description}
             </textarea>
 
-            <select id="" name="category" value={formData.category} onChange={handleChange}>
+            <label htmlFor="category">category</label>
+            <select id="category" name="category" value={formData.category} onChange={handleChange}>
                 <option value="" disabled>select a category</option>
                 { 
                     categories.map(c => <optgroup label={c.name}>
@@ -102,14 +134,32 @@ export default function TransactionForm ({handleClose, addTransaction}){
                         <div></div>
                     </div>
 
-                    <div>
-                        <p>groups</p>
-                        {}
-                    </div>
+                    {beneficiary === "group" && <div className={styles.groups}>
+                        {groups.length ?<>
+                                <p>groups:</p>
+                                {
+                                    groups.map(g => <>
+                                        <input type="radio" name="group" id={g.id} onChange={() => setFormData({...formData, group : g.id})} />
+                                        <label className={styles.group} htmlFor={g.id}>{g.name}</label>
+                                    </>)
+                                }
+                                {formData.group && <div className={styles.members}>
+                                    <p>members: </p>
+                                        {
+                                            getGroupById(formData.group).members.map(m => <>
+                                                <input type="checkbox" name="members" id={`${m.first_name}${m.last_name}`} value={m.id}checked={formData.members.includes(`${m.id}`)} onChange={handleMembers}/>
+                                                
+                                                <label htmlFor={`${m.first_name}${m.last_name}`}>{m.first_name} {m.last_name}</label>
+                                            </>)
+                                        }
+                                    </div>
+                                }
+                            </>
+                            : <p>you are not in any groups</p>
+                        }
+                    </div>}
                 </>
             }
-
-
             <button type="submit" >submit</button>
         </form>
     </div>

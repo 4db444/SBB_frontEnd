@@ -5,6 +5,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Cookies from "js-cookie";
 import TransactionForm from "../Components/TransactionPage/TransactionForm";
+import { useGroup } from "../Context/GroupContext";
 
 
 export default function TransactionPage (){
@@ -12,6 +13,7 @@ export default function TransactionPage (){
     const [showForm, setShowForm] = useState(true)
     const [totalIncomes, setTotalIncomes] = useState(0)
     const [totalExpenses, setTotalExpenses] = useState(0)
+    const {groups, getGroupById} = useGroup()
 
     useEffect(() => {
 
@@ -96,8 +98,8 @@ export default function TransactionPage (){
                     transactions.map(t => <tr>
                         <td>
                             {t.description}   
-                            {t?.group?.name && <span className={styles.group}>   
-                                    <MdOutlineGroup/>  {t.group.name}
+                            {t.group_id && <span className={styles.group}>   
+                                    <MdOutlineGroup/>  {getGroupById(t.group_id).name}
                                 </span>}
                         </td>
                         {t.expense_category_id !== undefined ? 
@@ -105,7 +107,7 @@ export default function TransactionPage (){
                             : 
                             <td className={styles.income}> + {t.amount}$</td>
                          }
-                        <td>{t?.category?.name || "-"}</td>
+                        <td>{t?.category?.name || "other"}</td>
                         <td className={styles.actions}>
                             <MdOutlineRemoveRedEye className={styles.eye}/>
                             <MdDeleteOutline className={styles.trash} onClick={() => handleDelete(t, t.expense_category_id !== undefined ? "expense" : "income")}/>
